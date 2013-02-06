@@ -18,10 +18,26 @@ public class Push implements Command{
     @Override
     public void execute(String arg, String getName, Stack stack, Map m) {
         //To change body of implemented methods use File | Settings | File Templates.
+
         String value = (String) m.get(arg);
 
+
+
         if (value == null) {
-            stack.push(Double.parseDouble(arg));
+            try {
+                Double.parseDouble(arg);
+                stack.push(Double.parseDouble(arg));
+            }
+            catch (Exception e) {
+                System.out.println("Не число");
+            }
+
+
+
+
+
+
+
         }
         else {
             stack.push(Double.parseDouble(value));
