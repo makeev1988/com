@@ -2,10 +2,7 @@ package com.jcourse.makeev.calculator;
 
 import com.jcourse.makeev.calculator.comand.*;
 
-import java.io.BufferedReader;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -18,57 +15,69 @@ import java.util.Stack;
  */
 public class ReedFile {
     private boolean indicator = true;
+    BufferedReader in;
 
-    ReedFile(String nameFile) {
-        Stack stack = new Stack();
-        HashMap m = new HashMap();              //карта определений
-
-        HashMap listCommmand = new HashMap();   //Карта команд
-        listCommmand.put("#", new Comment());
-        listCommmand.put("PUSH", new Push());
-        listCommmand.put("POP", new Pop());
-        listCommmand.put("PRINT", new Print());
-        listCommmand.put("+", new Plus());
-        listCommmand.put("-", new Minus());
-        listCommmand.put("*", new Multiply());
-        listCommmand.put("/", new Divide());
-        listCommmand.put("SQRT", new Sqrt());
-        listCommmand.put("DEFINE", new Define());
-
-        BufferedReader in;
-        try {
-            in = new BufferedReader(new InputStreamReader(new FileInputStream("c:\\Text\\"+nameFile)));
-            while (in.ready()) {
-                String s = in.readLine();
-                s = s.trim();
-                String[] st = s.split(" ");
-
-                Command c = (Command) listCommmand.get(st[0].toUpperCase());
-
-                if (c == null){
-                    System.out.println("Неизвестная команда");
-                    continue;
-                }
-                String arg1=null, arg2=null;
-                if (st.length > 1){
-                    arg1 = st[1];
-                }
-
-                if (st.length > 2){
-                    arg2 = st[2];
-                }
-
-                c.execute(arg1, arg2, stack, m);
-
-            }
-        } catch (IOException e) {
-            System.out.println("Нет такого файла " + nameFile);
-            indicator = false;
-
-        }
+    public ReedFile(InputStream inFile) {
+        in = new BufferedReader(new InputStreamReader(inFile));
     }
 
-    boolean getIndicator (){
-        return indicator;
+    String getNextSting() throws IOException {
+        String s = in.readLine();
+        return s;
     }
 }
+
+
+//    ReedFile(String nameFile) {
+//        Stack stack = new Stack();
+//        HashMap m = new HashMap();              //карта определений
+//
+//        HashMap listCommmand = new HashMap();   //Карта команд
+//        listCommmand.put("#", new Comment());
+//        listCommmand.put("PUSH", new Push());
+//        listCommmand.put("POP", new Pop());
+//        listCommmand.put("PRINT", new Print());
+//        listCommmand.put("+", new Plus());
+//        listCommmand.put("-", new Minus());
+//        listCommmand.put("*", new Multiply());
+//        listCommmand.put("/", new Divide());
+//        listCommmand.put("SQRT", new Sqrt());
+//        listCommmand.put("DEFINE", new Define());
+//
+//        BufferedReader in;
+//        try {
+//            in = new BufferedReader(new InputStreamReader(new FileInputStream("c:\\Text\\"+nameFile)));
+//            while (in.ready()) {
+//                String s = in.readLine();
+//                s = s.trim();
+//                String[] st = s.split(" ");
+//
+//                Command c = (Command) listCommmand.get(st[0].toUpperCase());
+//
+//                if (c == null){
+//                    System.out.println("Неизвестная команда");
+//                    continue;
+//                }
+//                String arg1=null, arg2=null;
+//                if (st.length > 1){
+//                    arg1 = st[1];
+//                }
+//
+//                if (st.length > 2){
+//                    arg2 = st[2];
+//                }
+//
+//                c.execute(arg1, arg2, stack, m);
+//
+//            }
+//        } catch (IOException e) {
+//            System.out.println("Нет такого файла " + nameFile);
+//            indicator = false;
+//
+//        }
+//    }
+//    boolean getIndicator (){
+//        return indicator;
+//    }
+
+

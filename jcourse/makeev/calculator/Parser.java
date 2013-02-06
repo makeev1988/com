@@ -1,12 +1,10 @@
 package com.jcourse.makeev.calculator;
 
 import com.jcourse.makeev.calculator.comand.*;
+import com.sun.xml.internal.bind.v2.runtime.output.IndentingUTF8XmlOutput;
 
-import java.io.IOException;
-import java.io.UnsupportedEncodingException;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Stack;
+import java.io.*;
+import java.util.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,11 +17,35 @@ public class Parser {
 
 
 
-    public static void main (String arg[]) throws IOException {
-        Stack stack = new Stack();
+    public static void main (String arg[]) {
+        Stack <Double> stack = new Stack<>();
         HashMap m = new HashMap();              //карта определений
 
-        HashMap listCommmand = new HashMap();   //Карта команд
+        HashMap<String, Command> listCommmand = new HashMap<>();   //Карта команд
+
+
+        /*
+        Properties p = new Properties();
+        try (InputStream in = Parser.class.getResourceAsStream("comands.properties")) {
+             p.load(in);
+        }catch (IOException e){
+            e.printStackTrace();
+        }
+
+
+          for(Enumeration e =p.propertyNames(); e.hasMoreElements();) {
+              String cmdName = (String)e.nextElement();
+              String className = p.getProperty(cmdName);
+              try {
+                  listCommmand.put(cmdName, (Command)Class.forName(className).newInstance());
+              } catch (Exception e1) {
+                  e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+
+              }
+          }
+        */
+
+
         listCommmand.put("#", new Comment());
         listCommmand.put("PUSH", new Push());
         listCommmand.put("POP", new Pop());
@@ -35,33 +57,41 @@ public class Parser {
         listCommmand.put("SQRT", new Sqrt());
         listCommmand.put("DEFINE", new Define());
 
-        System.out.println("Введите имя файла, файл должен находится в папке c:\\Text\\");
-        byte[] bName = new byte[128];
-        String encoding = System.getProperty("file.encoding");
-        int countName = System.in.read(bName);
-        String nameFile = new String(bName, 0, countName, encoding);
+//        System.out.println("Введите имя файла, файл должен находится в папке c:\\Text\\");
+//        byte[] bName = new byte[128];
+//        String encoding = System.getProperty("file.encoding");
+//        int countName = System.in.read(bName);
 
-        String file = nameFile.replaceAll("\\n", "");
+        InputStream in = System.in;
 
-        ReedFile rf = new ReedFile(file);
+        if (arg.length > 0) {
+            try {
+                in = new FileInputStream(arg[0]);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+                System.out.println("Файл не найден");
+            }
+        }
 
+        //String file = nameFile.replaceAll("\\n", "");
 
-        if (!rf.getIndicator()){
-            byte[] b = new byte[128];
+        ReedFile rf = new ReedFile(in);
 
-            while (true) {
-                int count = System.in.read(b);
-                String s = new String(b, 0, count, encoding);
+        String s;
+
+        try {
+            while ( (s = rf.getNextSting()) != null) {
+
                 s = s.trim();
                 String[] st = s.split(" ");
 
-                Command c = (Command) listCommmand.get(st[0].toUpperCase());
+                Command c =  listCommmand.get(st[0].toUpperCase());
 
                 if (c == null){
                     System.out.println("Неизвестная команда");
                     continue;
                 }
-                String arg1=null, arg2=null;
+                String arg1 = null, arg2 = null;
                 if (st.length > 1){
                     arg1 = st[1];
                 }
@@ -72,6 +102,9 @@ public class Parser {
 
                 c.execute(arg1, arg2, stack, m);
             }
+        } catch (Exception e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
+
     }
 }

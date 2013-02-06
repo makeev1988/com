@@ -13,5 +13,5 @@ import java.util.Stack;
  * To change this template use File | Settings | File Templates.
  */
 public interface Command {
-    void execute (String arg, String getName, Stack stack, Map m);
+    void execute (String arg, String getName, Stack<Double> stack, Map<String,Double> m);
 }
