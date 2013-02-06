@@ -29,7 +29,7 @@ public class Push implements Command{
                 stack.push(Double.parseDouble(arg));
             }
             catch (Exception e) {
-                System.out.println("Не число");
+                System.out.println(arg + " не определено");
             }
 
 

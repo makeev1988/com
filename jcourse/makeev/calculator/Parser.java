@@ -35,32 +35,43 @@ public class Parser {
         listCommmand.put("SQRT", new Sqrt());
         listCommmand.put("DEFINE", new Define());
 
-        byte[] b = new byte[128];
+        System.out.println("Введите имя файла, файл должен находится в папке c:\\Text\\");
+        byte[] bName = new byte[128];
         String encoding = System.getProperty("file.encoding");
+        int countName = System.in.read(bName);
+        String nameFile = new String(bName, 0, countName, encoding);
+
+        String file = nameFile.replaceAll("\\n", "");
+
+        ReedFile rf = new ReedFile(file);
 
 
-        while (true) {
-            int count = System.in.read(b);
-            String s = new String(b, 0, count, encoding);
-            s = s.trim();
-            String[] st = s.split(" ");
+        if (!rf.getIndicator()){
+            byte[] b = new byte[128];
 
-            Command c = (Command) listCommmand.get(st[0].toUpperCase());
+            while (true) {
+                int count = System.in.read(b);
+                String s = new String(b, 0, count, encoding);
+                s = s.trim();
+                String[] st = s.split(" ");
 
-            if (c == null){
-                System.out.println("Неизвестная команда");
-                continue;
+                Command c = (Command) listCommmand.get(st[0].toUpperCase());
+
+                if (c == null){
+                    System.out.println("Неизвестная команда");
+                    continue;
+                }
+                String arg1=null, arg2=null;
+                if (st.length > 1){
+                    arg1 = st[1];
+                }
+
+                if (st.length > 2){
+                    arg2 = st[2];
+                }
+
+                c.execute(arg1, arg2, stack, m);
             }
-            String arg1=null, arg2=null;
-            if (st.length > 1){
-                arg1 = st[1];
-            }
-
-            if (st.length > 2){
-                arg2 = st[2];
-            }
-
-            c.execute(arg1, arg2, stack, m);
         }
     }
 }
