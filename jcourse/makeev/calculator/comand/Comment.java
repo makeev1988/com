@@ -14,7 +14,7 @@ import java.util.Stack;
  */
 public class Comment implements Command {
     @Override
-    public void execute(String arg, String getName, Stack stack, Map m) {
+    public void execute(String arg, String getName, Stack<Double> stack, Map<String, Double> m) {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 }

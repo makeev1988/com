@@ -1,6 +1,7 @@
 package com.jcourse.makeev.calculator.comand;
 
 import com.jcourse.makeev.calculator.Command;
+import com.jcourse.makeev.calculator.ErrorCal;
 import sun.org.mozilla.javascript.internal.ast.IfStatement;
 
 import java.util.Map;
@@ -16,19 +17,16 @@ import java.util.Stack;
 public class Push implements Command{
 
     @Override
-    public void execute(String arg, String getName, Stack stack, Map m) {
-        String value = (String) m.get(arg);
-        if (value == null) {
+    public void execute(String arg, String getName, Stack<Double> stack, Map<String, Double> m) {
+        try {
+            double value = m.get(arg);
+            stack.push(value);
+        }catch (NullPointerException e){
             try {
-                Double.parseDouble(arg);
                 stack.push(Double.parseDouble(arg));
+            }catch (Exception e2) {
+                new ErrorCal("push");
             }
-            catch (Exception e) {
-                System.out.println(arg + " не определено");
-            }
-        }
-        else {
-            stack.push(Double.parseDouble(value));
         }
     }
 }

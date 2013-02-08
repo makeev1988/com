@@ -1,7 +1,9 @@
 package com.jcourse.makeev.calculator.comand;
 
 import com.jcourse.makeev.calculator.Command;
+import com.jcourse.makeev.calculator.ErrorCal;
 
+import java.util.EmptyStackException;
 import java.util.Map;
 import java.util.Stack;
 
@@ -16,12 +18,10 @@ public class Print implements Command {
 
     @Override
     public void execute(String arg, String getName, Stack stack, Map m) {
-        //To change body of implemented methods use File | Settings | File Templates.
-        if (stack.empty()) {
-            System.out.println("Стек пуст");
-        }
-        else {
+        try {
             System.out.println(stack.peek());
+        } catch (EmptyStackException e){
+            new ErrorCal("стек пуст");
         }
     }
 }

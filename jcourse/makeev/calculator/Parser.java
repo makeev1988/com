@@ -17,16 +17,16 @@ public class Parser {
 
 
 
-    public static void main (String arg[]) {
+    public static void main (String arg[]) throws IOException {
         Stack <Double> stack = new Stack<>();
-        HashMap m = new HashMap();              //карта определений
+        HashMap<String,Double> m = new HashMap<>();              //карта определений
 
         HashMap<String, Command> listCommmand = new HashMap<>();   //Карта команд
 
 
         /*
         Properties p = new Properties();
-        try (InputStream in = Parser.class.getResourceAsStream("comands.properties")) {
+        try (InputStream in = Parser.class.getResourceAsStream("commands.properties")) {
              p.load(in);
         }catch (IOException e){
             e.printStackTrace();
@@ -39,8 +39,7 @@ public class Parser {
               try {
                   listCommmand.put(cmdName, (Command)Class.forName(className).newInstance());
               } catch (Exception e1) {
-                  e1.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
-
+                  e1.printStackTrace();
               }
           }
         */
@@ -72,9 +71,6 @@ public class Parser {
                 System.out.println("Файл не найден");
             }
         }
-
-        //String file = nameFile.replaceAll("\\n", "");
-
         ReedFile rf = new ReedFile(in);
 
         String s;
@@ -105,7 +101,6 @@ public class Parser {
         } catch (Exception e) {
             e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
         }
-
+        in.close();
     }
 }
-

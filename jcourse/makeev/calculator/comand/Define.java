@@ -1,6 +1,7 @@
 package com.jcourse.makeev.calculator.comand;
 
 import com.jcourse.makeev.calculator.Command;
+import com.jcourse.makeev.calculator.ErrorCal;
 
 import java.util.Map;
 import java.util.Stack;
@@ -13,14 +14,13 @@ import java.util.Stack;
  * To change this template use File | Settings | File Templates.
  */
 public class Define implements Command {
+
     @Override
-    public void execute(String arg, String getName, Stack stack, Map m) {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void execute(String arg, String getName, Stack<Double> stack, Map<String,Double> m) {
         if (arg==null || getName==null ){
-            System.out.println(" Не корректный ввод");
-        }
-        else {
-            m.put(arg, getName);
+            new ErrorCal("define");
+        }else {
+            m.put(arg, Double.parseDouble(getName));
         }
     }
 }
