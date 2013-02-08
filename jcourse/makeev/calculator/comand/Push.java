@@ -17,12 +17,7 @@ public class Push implements Command{
 
     @Override
     public void execute(String arg, String getName, Stack stack, Map m) {
-        //To change body of implemented methods use File | Settings | File Templates.
-
         String value = (String) m.get(arg);
-
-
-
         if (value == null) {
             try {
                 Double.parseDouble(arg);
@@ -31,13 +26,6 @@ public class Push implements Command{
             catch (Exception e) {
                 System.out.println(arg + " не определено");
             }
-
-
-
-
-
-
-
         }
         else {
             stack.push(Double.parseDouble(value));
