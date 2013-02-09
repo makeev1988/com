@@ -21,45 +21,7 @@ public class Parser {
         Stack <Double> stack = new Stack<>();
         HashMap<String,Double> m = new HashMap<>();              //карта определений
 
-        HashMap<String, Command> listCommmand = new HashMap<>();   //Карта команд
-
-
-        /*
-        Properties p = new Properties();
-        try (InputStream in = Parser.class.getResourceAsStream("commands.properties")) {
-             p.load(in);
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-
-
-          for(Enumeration e =p.propertyNames(); e.hasMoreElements();) {
-              String cmdName = (String)e.nextElement();
-              String className = p.getProperty(cmdName);
-              try {
-                  listCommmand.put(cmdName, (Command)Class.forName(className).newInstance());
-              } catch (Exception e1) {
-                  e1.printStackTrace();
-              }
-          }
-        */
-
-
-        listCommmand.put("#", new Comment());
-        listCommmand.put("PUSH", new Push());
-        listCommmand.put("POP", new Pop());
-        listCommmand.put("PRINT", new Print());
-        listCommmand.put("+", new Plus());
-        listCommmand.put("-", new Minus());
-        listCommmand.put("*", new Multiply());
-        listCommmand.put("/", new Divide());
-        listCommmand.put("SQRT", new Sqrt());
-        listCommmand.put("DEFINE", new Define());
-
-//        System.out.println("Введите имя файла, файл должен находится в папке c:\\Text\\");
-//        byte[] bName = new byte[128];
-//        String encoding = System.getProperty("file.encoding");
-//        int countName = System.in.read(bName);
+        CommandFactory factory = new CommandFactory();
 
         InputStream in = System.in;
 
@@ -81,7 +43,7 @@ public class Parser {
                 s = s.trim();
                 String[] st = s.split(" ");
 
-                Command c =  listCommmand.get(st[0].toUpperCase());
+                Command c =  factory.getCom(st[0].toUpperCase());
 
                 if (c == null){
                     System.out.println("Неизвестная команда");
